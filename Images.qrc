@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/Arcade - Pac-Man - General Sprites.png</file>
+        <file>Images/MapaInicio.png</file>
+        <file>Images/MapaVacio.png</file>
+        <file>Images/Sprites.png</file>
+        <file>Images/icon.png</file>
+    </qresource>
+</RCC>
