@@ -11,6 +11,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QIcon>
+#include <QList>
 #include "epacman.h"
 #include "eghosts.h"
 #include "levels.h"
@@ -38,7 +39,11 @@ private:
 
     QGraphicsScene *MazeMap;
     EPacMan *PacMan;
+    //Barriers *Pared;
     void keyPressEvent(QKeyEvent *evento);
+    bool EvalueCollision();
+
+    QList<Barriers*>Paredes;
 
 };
 

@@ -1,23 +1,25 @@
 #include "epacman.h"
 
-EPacMan::EPacMan(QObject *parent)
+EPacMan::EPacMan(int PosX, int PosY, int WidthSprite, int HeightSprite, int Speed, QObject *parent)
 {
+    this->PosX = PosX;
+    this->PosY = PosY;
+    this->WidthSprite = WidthSprite;
+    this->HeightSprite = HeightSprite;
+    this->Speed = Speed;
+
     Timer = new QTimer();
-    Timer->start(60);
+    Timer->start(80);
 
     Rows = 0;
     Columns = 0;
 
-    WidthSprite = 15;
-    HeightSprite = 14;
-
-    PosX = WidthSprite/2;
-    PosY = HeightSprite/2;
-    Speed = 2;
-
     PixMap = new QPixmap(":/Images/Sprites.png");
 
     connect(Timer,&QTimer::timeout,this,&EPacMan::RefreshSprite);
+
+
+
 }
 
 QRectF EPacMan::boundingRect() const
@@ -30,19 +32,20 @@ void EPacMan::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     switch (Sprite) {
     case 1:
         //Adelante
-        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*0) + 1, (WidthSprite - 1), HeightSprite);
+        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*0) + 1, WidthSprite, HeightSprite);
+
         break;
     case 2:
         //Atras
-        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*1) + 1, (WidthSprite - 1), HeightSprite);
+        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*1) + 1, WidthSprite, HeightSprite);
         break;
     case 3:
         //Arriba
-        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*2) + 1, (WidthSprite - 1), HeightSprite);
+        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*2) + 1, WidthSprite, HeightSprite);
         break;
     case 4:
         //Abajo
-        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*3) + 1, (WidthSprite - 1), HeightSprite);
+        painter->drawPixmap((-WidthSprite)/2, (-HeightSprite)/2, *PixMap, Columns, (16*3) + 1, WidthSprite, HeightSprite);
         break;
     }
 }
@@ -58,7 +61,7 @@ void EPacMan::MoveDown()
 {
     PosY = PosY + Speed;
     setPos(PosX, PosY);
-    Sprite = 4;
+    //Sprite = 4;
 }
 
 void EPacMan::MoveLeft()

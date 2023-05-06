@@ -1,5 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include "barriers.h"
+#include "epacman.h"
 
 //Tamaño Mapa (224 x 248)
 
@@ -26,11 +28,32 @@ Widget::Widget(QWidget *parent): QWidget(parent), ui(new Ui::Widget)
 
     MazeMap = new QGraphicsScene();
     ui->graphicsView->setScene(MazeMap);
-    MazeMap->setSceneRect(X, Y, 224, 288);
-    PacMan = new EPacMan();
-    MazeMap->addItem(PacMan);
-    PacMan->setPos(100,100);
+    MazeMap->setSceneRect(X, Y, ui->graphicsView->width()-2, ui->graphicsView->height()-2);
 
+    PacMan = new EPacMan(124, 230, 14, 13, 2);
+    MazeMap->addItem(PacMan);
+
+
+
+    Paredes.push_back(new Barriers(12, 43, 224, 4));
+    MazeMap->addItem(Paredes.back());
+    Paredes.push_back(new Barriers(12, 287, 224, 4));
+    MazeMap->addItem(Paredes.back());
+    Paredes.push_back(new Barriers(12, 43, 4, 248));
+    MazeMap->addItem(Paredes.back());
+    Paredes.push_back(new Barriers(232, 43, 4, 248));
+    MazeMap->addItem(Paredes.back());
+//31
+    Paredes.push_back(new Barriers(31, 62, 25, 17));
+    MazeMap->addItem(Paredes.back());
+    Paredes.push_back(new Barriers(191, 62, 25, 17));
+    MazeMap->addItem(Paredes.back());
+    Paredes.push_back(new Barriers(71, 62, 33, 17));
+    MazeMap->addItem(Paredes.back());
+    Paredes.push_back(new Barriers(143, 62, 33, 17));
+    MazeMap->addItem(Paredes.back());
+    /*Paredes.push_back(new Barriers(232, 43, 4, 248));
+    MazeMap->addItem(Paredes.back());*/
 
 }
 
@@ -43,17 +66,49 @@ Widget::~Widget()
 void Widget::keyPressEvent(QKeyEvent *evento)
 {
     if (evento->key() == Qt::Key_W || evento->key() == Qt::Key_Up){
-        PacMan->MoveUp();
+        if (!EvalueCollision()){
+            PacMan->MoveUp();
+        }
+        else{
+            PacMan->MoveDown();
+        }
     }
     else if (evento->key() == Qt::Key_S || evento->key() == Qt::Key_Down){
-        PacMan->MoveDown();
+        if (!EvalueCollision()){
+            PacMan->MoveDown();
+        }
+        else{
+            PacMan->MoveUp();
+        }
     }
     else if (evento->key() == Qt::Key_A || evento->key() == Qt::Key_Left){
-        PacMan->MoveLeft();
+        if (!EvalueCollision()){
+            PacMan->MoveLeft();
+        }
+        else{
+            PacMan->MoveRight();
+        }
     }
     else if (evento->key() == Qt::Key_D || evento->key() == Qt::Key_Right){
-        PacMan->MoveRight();
+        if (!EvalueCollision()){
+            PacMan->MoveRight();
+        }
+        else{
+            PacMan->MoveLeft();
+        }
     }
+}
+
+bool Widget::EvalueCollision()
+{
+    QList<Barriers*>::Iterator it;
+    for (it = Paredes.begin(); it != Paredes.end(); it++){
+
+        if((*it)->collidesWithItem(PacMan)){
+            return true;
+        }
+    }
+    return false;
 }
 
 

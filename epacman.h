@@ -19,11 +19,12 @@ public:
     QTimer *Timer;
     QPixmap *PixMap;
 
-    EPacMan(QObject *parent = nullptr);
+    EPacMan(int PosX, int PosY, int WidthSprite, int HeightSprite, int Speed, QObject *parent = nullptr);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     //Movimiento
+    //void StartPos();
     void MoveUp();
     void MoveDown();
     void MoveLeft();
