@@ -1,6 +1,8 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+
+
 #include <QWidget>
 #include <QPainter>
 #include <QGraphicsItem>
@@ -35,13 +37,16 @@ public:
 private:
     Ui::Widget *ui;
 
-    int X, Y, Width, Height;
+    int X, Y, Width, Height, Option;
 
     QGraphicsScene *MazeMap;
     EPacMan *PacMan;
+    EGhosts *GhostRed;
+    QTimer *Delay;
+    QTimer *collisionTimer;
     //Barriers *Pared;
     void keyPressEvent(QKeyEvent *evento);
-    bool EvalueCollision();
+    void EvalueCollision();
 
     QList<Barriers*>Paredes;
 

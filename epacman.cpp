@@ -8,15 +8,17 @@ EPacMan::EPacMan(int PosX, int PosY, int WidthSprite, int HeightSprite, int Spee
     this->HeightSprite = HeightSprite;
     this->Speed = Speed;
 
-    Timer = new QTimer();
-    Timer->start(80);
+    TimerSprite = new QTimer();
+    TimerSprite->start(65);
+    TimerMove = new QTimer();
+    TimerMove->start(18);
 
     Rows = 0;
     Columns = 0;
 
     PixMap = new QPixmap(":/Images/Sprites.png");
 
-    connect(Timer,&QTimer::timeout,this,&EPacMan::RefreshSprite);
+    connect(TimerSprite,&QTimer::timeout,this,&EPacMan::RefreshSprite);
 
 
 
@@ -50,6 +52,58 @@ void EPacMan::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     }
 }
 
+void EPacMan::MoveEntity(int Option)
+{
+    disconnect(TimerMove, &QTimer::timeout, this, &EPacMan::MoveUp);
+    disconnect(TimerMove, &QTimer::timeout, this, &EPacMan::MoveDown);
+    disconnect(TimerMove, &QTimer::timeout, this, &EPacMan::MoveLeft);
+    disconnect(TimerMove, &QTimer::timeout, this, &EPacMan::MoveRight);
+
+        switch (Option) {
+        case 1:
+            connect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveUp);
+            break;
+        case 2:
+            connect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveDown);
+            break;
+        case 3:
+            connect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveLeft);
+            break;
+        case 4:
+            connect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveRight);
+            break;
+        }
+}
+
+void EPacMan::StopEntity(int Option)
+{
+
+        switch (Option) {
+        case 1:
+            disconnect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveUp);
+            PosY = PosY + Speed;
+            setPos(PosX, PosY);
+            break;
+        case 2:
+            disconnect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveDown);
+            PosY = PosY - Speed;
+            setPos(PosX, PosY);
+            break;
+        case 3:
+            disconnect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveLeft);
+            PosX = PosX + Speed;
+            setPos(PosX, PosY);
+            break;
+        case 4:
+            disconnect(TimerMove,&QTimer::timeout,this,&EPacMan::MoveRight);
+            PosX = PosX - Speed;
+            setPos(PosX, PosY);
+            break;
+        }
+}
+
+
+
 void EPacMan::MoveUp()
 {
     PosY = PosY - Speed;
@@ -61,7 +115,7 @@ void EPacMan::MoveDown()
 {
     PosY = PosY + Speed;
     setPos(PosX, PosY);
-    //Sprite = 4;
+    Sprite = 4;
 }
 
 void EPacMan::MoveLeft()

@@ -20,6 +20,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 
+
 };
 
 #endif // BARRIERS_H

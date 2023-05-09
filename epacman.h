@@ -1,11 +1,14 @@
 #ifndef EPACMAN_H
 #define EPACMAN_H
 
+#include <barriers.h>
+
 #include <QObject>
 #include <QGraphicsItem>
 #include <QTimer>
 #include <QPixmap>
 #include <QPainter>
+#include <QKeyEvent>
 
 
 class EPacMan : public QObject, public QGraphicsItem
@@ -16,7 +19,8 @@ public:
 
     int PosX, PosY, Speed, Rows, Columns, WidthSprite, HeightSprite, Sprite;
 
-    QTimer *Timer;
+    QTimer *TimerSprite;
+    QTimer *TimerMove;
     QPixmap *PixMap;
 
     EPacMan(int PosX, int PosY, int WidthSprite, int HeightSprite, int Speed, QObject *parent = nullptr);
@@ -25,6 +29,9 @@ public:
 
     //Movimiento
     //void StartPos();
+    void keyPressEvent(QKeyEvent *evento, EPacMan *PacMan);
+    void MoveEntity(int Option);
+    void StopEntity(int Option);
     void MoveUp();
     void MoveDown();
     void MoveLeft();

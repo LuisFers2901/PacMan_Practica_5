@@ -17,6 +17,9 @@ QRectF Barriers::boundingRect() const
 
 void Barriers::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    //painter->setBrush(Qt::transparent);
+    //painter->setPen(Qt::NoPen);
+
     painter->setBrush(Qt::blue);
     painter->drawRect(boundingRect());
 }
