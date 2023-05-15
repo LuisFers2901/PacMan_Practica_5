@@ -1,8 +1,9 @@
 
 #include "ambientsound.h"
 
-AmbientSound::AmbientSound()
-{
+//AmbientSound::AmbientSound(const QString, QObject *parent)
+//{
 
-}
+
+//}
 

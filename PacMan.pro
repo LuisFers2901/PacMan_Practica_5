@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,8 +12,10 @@ SOURCES += \
     ambientsound.cpp \
     barriers.cpp \
     eghosts.cpp \
+    entities.cpp \
     epacman.cpp \
     levels.cpp \
+    listbarriers.cpp \
     main.cpp \
     widget.cpp
 
@@ -21,8 +23,10 @@ HEADERS += \
     ambientsound.h \
     barriers.h \
     eghosts.h \
+    entities.h \
     epacman.h \
     levels.h \
+    listbarriers.h \
     widget.h
 
 FORMS += \

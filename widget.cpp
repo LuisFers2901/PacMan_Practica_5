@@ -22,9 +22,9 @@ Widget::Widget(QWidget *parent): QWidget(parent), ui(new Ui::Widget)
 
     Option = 0;
 
-    Delay->start(18);
+//    Delay->start(18);
 
-    connect(Delay, &QTimer::timeout, this, &Widget::EvalueCollision);
+   // connect(Delay, &QTimer::timeout, this, &EPacMan::);
 
     setWindowIcon(Icon);
     setWindowTitle("PacMan");
@@ -38,127 +38,79 @@ Widget::Widget(QWidget *parent): QWidget(parent), ui(new Ui::Widget)
     ui->graphicsView->setScene(MazeMap);
     MazeMap->setSceneRect(X, Y, ui->graphicsView->width()-2, ui->graphicsView->height()-2);
 
-    PacMan = new EPacMan(124, 231, 14, 13, 1);
+    PointCounter = new QLabel("HIGH SCORE\n0",nullptr);
+    PointCounter->setGeometry(75, 5, 100, 34);
+    PointCounter->setStyleSheet("color: white;"
+                                "font-weight: bold;"
+                                "background-color: transparent;"
+                                "font-size: 15px;");
+    PointCounter->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    MazeMap->addWidget(PointCounter);
+
+    ListLifesMap.SpecialBarriers();
+    for (auto lifes : ListLifesMap.Lifes) {
+        MazeMap->addItem(lifes);
+    }
+
+    ListBarriersMap.BarriersMap();
+    for (auto barrier : ListBarriersMap.Paredes) {
+        MazeMap->addItem(barrier);
+    }
+
+    ListPowerUps.PowerUp();
+    for (auto power : ListPowerUps.PowerUps) {
+        MazeMap->addItem(power);
+    }
+
+    ListFoodMap.FoodsMap();
+    for (auto food : ListFoodMap.Food) {
+        MazeMap->addItem(food);
+    }
+
+    ListPortalsMap.SpecialBarriers();
+
+    PacMan = new Entities(124, 231, 14, 13, 1, 1, 65, 18, nullptr);
     MazeMap->addItem(PacMan);
-    GhostRed = new EGhosts(124, 140, 14, 13, 1);
-    MazeMap->addItem(GhostRed);
+
+    Blinky = new Entities(124, 135, 14, 13, 1, 2, 65, 18, nullptr);
+    MazeMap->addItem(Blinky);
+
+
+    EntitiesPlay.push_back(Blinky);
+    Pinky = new Entities(124, 158, 14, 13, 1, 3, 65, 18, nullptr);
+    MazeMap->addItem(Pinky);
+    EntitiesPlay.push_back(Pinky);
+    Inky = new Entities(108, 158, 14, 13, 1, 4, 65, 18, nullptr);
+    MazeMap->addItem(Inky);
+    EntitiesPlay.push_back(Inky);
+    Clyde = new Entities(140, 158, 14, 13, 1, 5, 65, 18, nullptr);
+    MazeMap->addItem(Clyde);
+    EntitiesPlay.push_back(Clyde);
+
+//    FunctionsGhosts->ExitHouse(Pinky, 1, 0);
+//    FunctionsGhosts->ExitHouse(Inky, 1, 1);
+//    FunctionsGhosts->ExitHouse(Clyde, 1, 2);
 
 
 
-    Paredes.push_back(new Barriers(12, 42, 224, 7));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(12, 286, 224, 4));
-    MazeMap->addItem(Paredes.back());
-    //lateral derecho
-    Paredes.push_back(new Barriers(11, 42, 6, 109));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(11, 165, 6, 123));
-    MazeMap->addItem(Paredes.back());
-    //lateral izquierdo
-    Paredes.push_back(new Barriers(232, 42, 4, 109));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(232, 165, 4, 123));
-    MazeMap->addItem(Paredes.back());
-    //portales
-    Paredes.push_back(new Barriers(-25, 149, 4, 19));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(269, 149, 4, 19));
-    MazeMap->addItem(Paredes.back());
-
-    Paredes.push_back(new Barriers(31, 62, 26, 19));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(71, 62, 34, 19));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(143, 62, 34, 19));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(191, 62, 26, 19));
-    MazeMap->addItem(Paredes.back());
-    //---
-    Paredes.push_back(new Barriers(-25, 118, 82, 34));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(191, 118, 82, 34));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(-25, 165, 82, 35));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(191, 165, 82, 35));
-    MazeMap->addItem(Paredes.back());
-
-    Paredes.push_back(new Barriers(95, 142, 58, 3));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(95, 173, 58, 3));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(95, 142, 3, 31));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(150, 142, 3, 31));
-    MazeMap->addItem(Paredes.back());
 
 
-    Paredes.push_back(new Barriers(31, 94, 26, 11));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(95, 94, 58, 11));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(191, 94, 25, 11));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(31, 213, 26, 12));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(71, 213, 34, 12));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(143, 213, 34, 12));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(191, 213, 26, 12));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(15, 238, 18, 10));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(215, 238, 18, 10));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(95, 238, 58, 10));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(71, 238, 10, 23));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(167, 238, 10, 23));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(31, 261, 74, 12));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(143, 261, 74, 12));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(95, 190, 58, 10));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(78, 118, 26, 10));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(143, 118, 26, 10));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(119, 47, 10, 32));
-    MazeMap->addItem(Paredes.back());
-    //laterales verticales
-    Paredes.push_back(new Barriers(71, 94, 10, 58));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(167, 94, 10, 58));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(71, 165, 10, 35));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(167, 165, 10, 35));
-    MazeMap->addItem(Paredes.back());
-    //mitad vertical
-    Paredes.push_back(new Barriers(119, 103, 10, 25));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(119, 199, 10, 26));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(119, 248, 10, 25));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(47, 223, 10, 25));
-    MazeMap->addItem(Paredes.back());
-    Paredes.push_back(new Barriers(191, 223, 10, 25));
-    MazeMap->addItem(Paredes.back());/**/
-
+    connect(PacMan->TimerMove, &QTimer::timeout, this, &Widget::EvalueCollision);
 }
 
 Widget::~Widget()
 {
     delete ui;
+    ListBarriersMap.~ListBarriers();
+    delete PacMan;
+    delete Blinky;
+    delete Pinky;
+    delete Inky;
+    delete Clyde;
 
 }
 
-bool Colision = false;
 void Widget::keyPressEvent(QKeyEvent *evento)
 {
 
@@ -177,19 +129,104 @@ void Widget::keyPressEvent(QKeyEvent *evento)
     else if (evento->key() == Qt::Key_D || evento->key() == Qt::Key_Right){
         PacMan->MoveEntity(4);
         Option = 4;
+
     }
 }
 
 void Widget::EvalueCollision()
 {
-    QList<Barriers*>::Iterator it;
-    for (it = Paredes.begin(); it != Paredes.end(); it++){
 
-        if((*it)->collidesWithItem(PacMan)){
+    for (auto barrier : ListBarriersMap.Paredes) {
+        if(barrier->collidesWithItem(PacMan)){
             PacMan->StopEntity(Option);
         }
     }
+
+    for (auto powerup : ListPowerUps.PowerUps) {
+        if(powerup->collidesWithItem(PacMan)){
+            Blinky->Sprite = 6;
+            Pinky->Sprite = 6;
+            Inky->Sprite = 6;
+            Clyde->Sprite = 6;
+        }
+    }
+
+    for (auto entity : EntitiesPlay) {
+        if(entity->collidesWithItem(PacMan)){
+
+            PacMan->Dead(Option);
+            MazeMap->removeItem(Blinky);
+            MazeMap->removeItem(Pinky);
+            MazeMap->removeItem(Inky);
+            MazeMap->removeItem(Clyde);
+            PacMan->PosX = 124;
+            PacMan->PosY = 231;
+            PacMan->setPos(124, 231);
+            Blinky->PosX = 124;
+            Blinky->PosY = 135;
+            Blinky->setPos(124, 135);
+            Pinky->PosX = 124;
+            Pinky->PosY = 158;
+            Pinky->setPos(124, 158);
+            Inky->PosX = 108;
+            Inky->PosY = 158;
+            Inky->setPos(108, 158);
+            Clyde->PosX = 140;
+            Clyde->PosY = 158;
+            Clyde->setPos(140, 158);
+            PacMan->Sprite = 1;
+            PacMan->TimerMove->start(PacMan->TimerM);
+
+            MazeMap->addItem(Blinky);
+            MazeMap->addItem(Pinky);
+            MazeMap->addItem(Inky);
+            MazeMap->addItem(Clyde);
+            MazeMap->removeItem(ListLifesMap.Lifes[Cont]);
+            Cont--;
+        }
+    }
+    Barriers * o;
+    for(QList<Barriers*>::iterator i = ListFoodMap.Food.begin(); i!=ListFoodMap.Food.end(); i++){
+        o = *i;
+        if(o->collidesWithItem(PacMan)){
+            MazeMap->removeItem(o);
+            delete o;
+            ListFoodMap.Food.erase(i);
+            i--;
+            Points += 10;
+            Score = QString("HIGH SCORE\n%1").arg(Points);
+            PointCounter->setText(Score);
+        }
+    }
+    for(QList<Barriers*>::iterator i = ListPowerUps.PowerUps.begin(); i != ListPowerUps.PowerUps.end(); i++){
+        o = *i;
+        if(o->collidesWithItem(PacMan)){
+            MazeMap->removeItem(o);
+            delete o;
+            ListPowerUps.PowerUps.erase(i);
+            i--;
+            Points += 50;
+            Score = QString("HIGH SCORE\n%1").arg(Points);
+            PointCounter->setText(Score);
+        }
+    }
+
+    int Cont = 0;
+
+    for (auto portal : ListPortalsMap.Portals) {
+        Cont++;
+        if(portal->collidesWithItem(PacMan)){
+            if(Cont == 1){
+                PacMan->PosX = 250;
+                PacMan->PosY = 158;
+
+            }
+            else if(Cont == 2){
+                PacMan->PosX = -5;
+                PacMan->PosY = 158;
+            }
+
+        }
+    }
+
 }
-
-
-

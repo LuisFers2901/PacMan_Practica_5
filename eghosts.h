@@ -1,14 +1,16 @@
 #ifndef EGHOSTS_H
 #define EGHOSTS_H
 
-#include <barriers.h>
-
 #include <QObject>
 #include <QGraphicsItem>
 #include <QTimer>
 #include <QPixmap>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QThread>
+#include "entities.h"
+#include "listbarriers.h"
+#include "barriers.h"
 
 
 class EGhosts: public QObject, public QGraphicsItem
@@ -16,22 +18,27 @@ class EGhosts: public QObject, public QGraphicsItem
     Q_OBJECT
 public:
 
+    int WidthSprite, HeightSprite, Speed, PosX, PosY;
+    bool DesUp, DesDown, DesLeft, DesRight;
+    bool Sides = true;  //true = Right false = Left
+    bool Poles = true;  //true = Up false = Down
 
-    int PosX, PosY, Speed, Rows, Columns, WidthSprite, HeightSprite, Sprite;
+    EGhosts(Entities *Entity,QObject *parent);
 
-    QTimer *TimerSprite;
-    QTimer *TimerMove;
-    QPixmap *PixMap;
-
-    EGhosts(int PosX, int PosY, int WidthSprite, int HeightSprite, int Speed, QObject *parent = nullptr);
-    QRectF boundingRect() const;
+    QRectF boundingRect() const;                //Genera la hitbox de la entidad
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-signals:
+    ListBarriers ListBarriersMap;
+    int DistanceX, DistanceY, Blocked;
 
-public slots:
+    void ExitHouse(Entities *Entity, int UpDown, int LeftRight);
 
-    void RefreshSprite();
+    void Distance(int PosXPacMan, int PosYPacMan, int PosXGhost, int PosYGhost, Entities *Entity);
+    void MoveNortheast(Entities *Entity);
+    void MoveNorthwest(Entities *Entity);
+    void MoveSouthwest(Entities *Entity);
+    void MoveSoutheast(Entities *Entity);
+
 };
 
 #endif // EGHOSTS_H
